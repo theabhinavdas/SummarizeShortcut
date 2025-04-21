@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Marked.js Test</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    .test-container {
+      border: 1px solid #ccc;
+      padding: 15px;
+      margin: 15px 0;
+      border-radius: 5px;
+    }
+    pre {
+      background-color: #f5f5f5;
+      padding: 10px;
+      border-radius: 3px;
+      overflow: auto;
+    }
+  </style>
+</head>
+<body>
+  <h1>Marked.js Test Page</h1>
+  
+  <div class="test-container">
+    <h2>Test Results:</h2>
+    <div id="result">Testing...</div>
+  </div>
+
+  <script>
+    document.getElementById('result').textContent = 'Loading marked.js...';
+    
+    // Load the marked library
+    const script = document.createElement('script');
+    script.src = 'marked.min.js';
+    script.onload = () => {
+      document.getElementById('result').textContent = 'Marked library loaded successfully';
+      
+      if (typeof window.marked !== 'undefined') {
+        const testMarkdown = `# Test Heading
+
+This is a paragraph with **bold** and *italic* text.
+
+## Lists
+
+* Item 1
+* Item 2
+  * Nested item
+
+1. Ordered item 1
+2. Ordered item 2
+
+## Code
+
+\`\`\`javascript
+function test() {
+  console.log('Hello, world!');
+}
+\`\`\``;
+
+        try {
+          const html = window.marked.parse(testMarkdown);
+          
+          document.getElementById('result').innerHTML = `
+            <div style="color: green; font-weight: bold; margin-bottom: 20px;">
+              ✓ Marked.js loaded and working correctly!
+            </div>
+            
+            <h3>Original Markdown:</h3>
+            <pre>${testMarkdown}</pre>
+            
+            <h3>Rendered HTML:</h3>
+            <div class="rendered">${html}</div>
+            
+            <h3>Raw HTML Output:</h3>
+            <pre>${html.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+          `;
+        } catch (error) {
+          document.getElementById('result').innerHTML = `
+            <div style="color: red; font-weight: bold;">
+              ✗ Error using marked.js: ${error.message}
+            </div>
+          `;
+        }
+      } else {
+        document.getElementById('result').innerHTML = `
+          <div style="color: red; font-weight: bold;">
+            ✗ Error: window.marked is undefined after loading the script
+          </div>
+        `;
+      }
+    };
+    
+    script.onerror = (error) => {
+      document.getElementById('result').innerHTML = `
+        <div style="color: red; font-weight: bold;">
+          ✗ Error loading marked.min.js file: ${error}
+        </div>
+      `;
+    };
+    
+    document.head.appendChild(script);
+  </script>
+</body>
+</html> 

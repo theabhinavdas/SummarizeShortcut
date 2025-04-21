@@ -1,0 +1,60 @@
+{
+  "manifest_version": 3,
+  "name": "SummarizeShortcut",
+  "version": "0.1.0",
+  "description": "Summarize highlighted text with OpenAI, Azure OpenAI, or Google Gemini",
+  "icons": {
+    "16": "images/ss-logo-16.png",
+    "128": "images/ss-logo-128.png"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/ss-logo-16.png",
+      "128": "images/ss-logo-128.png"
+    }
+  },
+  "background": {
+    "service_worker": "service-worker.js",
+    "type": "module"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"]
+    }
+  ],
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "images/animated-loading.json", 
+        "injector.js", 
+        "markdown-styles.css", 
+        "js/lottie.min.js", 
+        "js/marked.min.js",
+        "js/*"
+      ],
+      "matches": ["<all_urls>"]
+    }
+  ],
+  "permissions": [
+    "storage", 
+    "activeTab",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://api.openai.com/*",
+    "https://*.openai.azure.com/*",
+    "https://generativelanguage.googleapis.com/*"
+  ],
+  "commands": {
+    "summarize-text": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+S",
+        "mac": "Command+Shift+S"
+      },
+      "description": "Summarize selected text"
+    }
+  },
+  "minimum_chrome_version": "102"
+}

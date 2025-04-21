@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>⚡️ SummarizeShortcut</title>
+  <meta charset="utf-8">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.10.2/lottie.min.js"></script>
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+      width: 350px;
+      padding: 16px;
+    }
+    h1 {
+      font-size: 18px;
+      margin-top: 0;
+    }
+    h2 {
+      font-size: 16px;
+      margin-top: 16px;
+      margin-bottom: 8px;
+    }
+    .input-group {
+      margin-bottom: 16px;
+    }
+    label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 500;
+    }
+    input, select {
+      width: 100%;
+      padding: 8px;
+      box-sizing: border-box;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+    }
+    button {
+      background-color: #4285f4;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+    button:hover {
+      background-color: #3367d6;
+    }
+    .status {
+      margin-top: 12px;
+      padding: 8px;
+      border-radius: 4px;
+    }
+    .error {
+      background-color: #fdeded;
+      color: #5f2120;
+    }
+    .success {
+      background-color: #e8f5e9;
+      color: #1e4620;
+    }
+    .instructions {
+      margin-top: 16px;
+      padding: 12px;
+      background-color: #f5f5f5;
+      border-radius: 4px;
+    }
+    .tab-nav {
+      display: flex;
+      margin-bottom: 16px;
+      border-bottom: 1px solid #ddd;
+    }
+    .tab-button {
+      background: none;
+      border: none;
+      padding: 8px 16px;
+      cursor: pointer;
+      font-weight: 500;
+      color: #666;
+      border-bottom: 2px solid transparent;
+    }
+    .tab-button.active {
+      color: #4285f4;
+      border-bottom: 2px solid #4285f4;
+    }
+    .tab-content {
+      display: none;
+    }
+    .tab-content.active {
+      display: block;
+    }
+    .model-option {
+      display: flex;
+      align-items: center;
+      padding: 8px;
+      border: 1px solid #ddd;
+      margin-bottom: 8px;
+      border-radius: 4px;
+    }
+    .model-option:hover {
+      background-color: #f5f9ff;
+    }
+    .model-option input {
+      margin-right: 10px;
+      width: auto;
+    }
+    .help-text {
+      font-size: 12px;
+      color: #666;
+      margin-top: 4px;
+    }
+    .toggle-section {
+      margin-top: 16px;
+    }
+    .toggle-button {
+      background: none;
+      border: none;
+      color: #4285f4;
+      padding: 0;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+    }
+    .toggle-button::after {
+      content: "▼";
+      font-size: 10px;
+      margin-left: 5px;
+    }
+    .toggle-button.collapsed::after {
+      content: "►";
+    }
+    .collapsible {
+      margin-top: 8px;
+    }
+    .collapsible.hidden {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <h1>⚡️ SummarizeShortcut</h1>
+  
+  <div id="settings">
+    <div class="tab-nav">
+      <button id="tab-btn-providers" class="tab-button active">LLM Providers</button>
+      <button id="tab-btn-settings" class="tab-button">Settings</button>
+    </div>
+    
+    <div id="tab-providers" class="tab-content active">
+      <h2>Select LLM Provider</h2>
+      
+      <div class="model-option">
+        <input type="radio" name="selected-provider" id="provider-openai" value="openai">
+        <label for="provider-openai">OpenAI</label>
+      </div>
+      
+      <div class="model-option">
+        <input type="radio" name="selected-provider" id="provider-azure" value="azure">
+        <label for="provider-azure">Azure OpenAI</label>
+      </div>
+      
+      <div class="model-option">
+        <input type="radio" name="selected-provider" id="provider-gemini" value="gemini">
+        <label for="provider-gemini">Google Gemini</label>
+      </div>
+      
+      <div class="toggle-section">
+        <button id="toggle-provider-settings" class="toggle-button">Provider Settings</button>
+        <div id="provider-settings" class="collapsible">
+          <!-- OpenAI Settings -->
+          <div id="openai-settings" class="provider-settings">
+            <div class="input-group">
+              <label for="openai-api-key">OpenAI API Key</label>
+              <input type="password" id="openai-api-key" placeholder="Enter your OpenAI API key">
+              <div class="help-text">API key for OpenAI services (GPT models)</div>
+            </div>
+            <div class="input-group">
+              <label for="openai-model">Model</label>
+              <select id="openai-model">
+                <option value="gpt-3.5-turbo">GPT-3.5 Turbo</option>
+                <option value="gpt-4">GPT-4</option>
+                <option value="gpt-4-turbo">GPT-4 Turbo</option>
+              </select>
+            </div>
+          </div>
+          
+          <!-- Azure OpenAI Settings -->
+          <div id="azure-settings" class="provider-settings" style="display: none;">
+            <div class="input-group">
+              <label for="azure-api-key">Azure API Key</label>
+              <input type="password" id="azure-api-key" placeholder="Enter your Azure API key">
+              <div class="help-text">The API key for your Azure OpenAI resource</div>
+            </div>
+            <div class="input-group">
+              <label for="azure-endpoint">Azure Endpoint URL</label>
+              <input type="text" id="azure-endpoint" placeholder="https://your-resource.openai.azure.com">
+              <div class="help-text">The full endpoint URL without trailing slash (e.g., https://your-resource.openai.azure.com)</div>
+            </div>
+            <div class="input-group">
+              <label for="azure-deployment">Deployment Name</label>
+              <input type="text" id="azure-deployment" placeholder="Enter deployment name">
+              <div class="help-text">The name of your Azure OpenAI chat model deployment (e.g., gpt-35-turbo)</div>
+            </div>
+          </div>
+          
+          <!-- Gemini Settings -->
+          <div id="gemini-settings" class="provider-settings" style="display: none;">
+            <div class="input-group">
+              <label for="gemini-api-key">Gemini API Key</label>
+              <input type="password" id="gemini-api-key" placeholder="Enter your Gemini API key">
+              <div class="help-text">API key for Google Gemini services</div>
+            </div>
+            <div class="input-group">
+              <label for="gemini-model">Model</label>
+              <select id="gemini-model">
+                <option value="" disabled selected>Enter API key and fetch models first</option>
+              </select>
+              <div class="help-text">Select a model that supports text generation</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <button id="save-btn">Save Settings</button>
+      <div id="status" class="status" style="display: none;"></div>
+    </div>
+    
+    <div id="tab-settings" class="tab-content">
+      <h2>Summarization Settings</h2>
+      <div class="input-group">
+        <label for="max-length">Maximum Summary Length</label>
+        <select id="max-length">
+          <option value="100">Short (100 tokens)</option>
+          <option value="200" selected>Medium (200 tokens)</option>
+          <option value="300">Long (300 tokens)</option>
+          <option value="500">Detailed (500 tokens)</option>
+        </select>
+      </div>
+      
+      <div class="input-group">
+        <label for="temperature">Creativity Level</label>
+        <select id="temperature">
+          <option value="0">Very precise</option>
+          <option value="0.3">Precise</option>
+          <option value="0.5" selected>Balanced</option>
+          <option value="0.7">Creative</option>
+          <option value="1">Very creative</option>
+        </select>
+      </div>
+      
+      <button id="save-settings-btn">Save Settings</button>
+      <div id="settings-status" class="status" style="display: none;"></div>
+    </div>
+  </div>
+
+  <div class="instructions">
+    <p><strong>How to use:</strong></p>
+    <ol>
+      <li>Highlight text on any webpage</li>
+      <li>Press <strong>Ctrl+Shift+S</strong> <small>(Command+Shift+S on Mac)</small></li>
+      <li>A summary will appear next to your selection</li>
+    </ol>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html> 
